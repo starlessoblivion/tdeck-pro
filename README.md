@@ -193,7 +193,7 @@ The TCA8418 is a 4x10 matrix scanner. Key events come in as press/release with m
      q  w  e  r  t  y  u  i  o  p
      a  s  d  f  g  h  j  k  l  [BKSP]
  [ALT]  z  x  c  v  b  n  m  $  [ENTER]
-        [LSHIFT] [MIC] [SPACE] [SYM] [RSHIFT]
+[LSFT]  [MIC] [--SPACE--] [SYM] [RSFT]
 ```
 
 **Shift (held):**
@@ -201,7 +201,7 @@ The TCA8418 is a 4x10 matrix scanner. Key events come in as press/release with m
      Q  W  E  R  T  Y  U  I  O  P
      A  S  D  F  G  H  J  K  L  [BKSP]
  [ALT]  Z  X  C  V  B  N  M  $  [ENTER]
-        [LSHIFT]  --  [SPACE] [SYM] [RSHIFT]
+[LSFT]   --   [--SPACE--] [SYM] [RSFT]
 ```
 
 **SYM (held):**
@@ -209,7 +209,7 @@ The TCA8418 is a 4x10 matrix scanner. Key events come in as press/release with m
      #  1  2  3  (  )  _  -  +  @
      *  4  5  6  /  :  ;  '  "  [BKSP]
  [ALT]  7  8  9  ?  |  ,  .  $  [ENTER]
-        [LSHIFT]  0   [SPACE] [SYM] [RSHIFT]
+[LSFT]   0    [--SPACE--] [SYM] [RSFT]
 ```
 
 **Reading keys:**
