@@ -196,6 +196,14 @@ Row 2:  [ALT]  z  x  c  v  b  n  m  $  [ENTER]
 Row 3:  [LSHIFT]  [MIC/0]  [---SPACE---]  [SYM]  [RSHIFT]
 ```
 
+**Shift (held):**
+```
+Row 0:  Q  W  E  R  T  Y  U  I  O  P
+Row 1:  A  S  D  F  G  H  J  K  L  [BKSP]
+Row 2:  [ALT]  Z  X  C  V  B  N  M  $  [ENTER]
+Row 3:  [LSHIFT]  [MIC/0]  [---SPACE---]  [SYM]  [RSHIFT]
+```
+
 **Reading keys:**
 ```cpp
 if (keypad.available() > 0) {
