@@ -192,8 +192,8 @@ The TCA8418 is a 4x10 matrix scanner. Key events come in as press/release with m
 ```
 Row 0:  q  w  e  r  t  y  u  i  o  p
 Row 1:  a  s  d  f  g  h  j  k  l  [BKSP]
-Row 2:  [ALT]  z  x  c  v  b  n  m  [SYM]  [ENTER]
-Row 3:  [--------SPACE--------]  -  *  [SHIFT]  0  --
+Row 2:  [ALT]  z  x  c  v  b  n  m  $  [ENTER]
+Row 3:  [LSHIFT]  [MIC/0]  [---SPACE---]  [SYM]  [RSHIFT]
 ```
 
 **Reading keys:**
@@ -366,10 +366,13 @@ The touch toggle exists in settings but currently has no effect since touch neve
 
 ### Keyboard Mapping — MOSTLY BROKEN
 
-The basic letter layout works, but the full keyboard mapping is incomplete and likely wrong in places. Known issues:
+The letter layout (rows 0-1) and basic navigation work. Row 2 and 3 physical layout has been identified but matrix-to-physical mapping is best-effort and may be wrong. Known issues:
 
-- **SYM key** — only number input is mapped (SYM + letter = 1-9). The physical keycaps have additional symbol labels (`@`, `#`, `!`, `?`, etc.) that are **not yet mapped**. The full SYM layout still needs to be figured out and added.
-- **Bottom row** — `[3][8]` = `'0'`, `[3][9]` = unmapped. The factory firmware maps `[3][9]` as `'U'` (possibly up-arrow or microphone key). Physical positions may not match what's expected.
+- **SYM key** — only number input is mapped (SYM + letter = 1-9). The physical keycaps likely have additional symbol labels (`@`, `#`, `!`, `?`, etc.) that are **not yet mapped**. The full SYM layout still needs to be documented.
+- **Row 3 matrix positions** — the 5 physical keys (LShift, Mic/0, Space, Sym, RShift) map to 10 matrix columns. Space spans multiple columns. The exact column assignments for SYM and the two shift keys are best guesses based on the factory firmware — if a key produces the wrong character, the matrix column mapping needs adjusting.
+- **`-` and `*` not directly typeable** — these were previously mapped as standalone keys on row 3 but that was incorrect. They need to be added as SYM combinations once the full SYM layout is known.
+- **`$` is a standalone key** — row 2 position 8 produces a literal `$` character (not a modifier).
+- **Mic/Mute button** — currently mapped as `'0'` for text input. Could be repurposed as a function key (mute toggle, etc.).
 - **Column reversal** — the TCA8418 column order is electrically reversed from physical layout. The firmware corrects with `col = (KB_COLS - 1) - k % KB_COLS`. If you're getting wrong characters, check that this reversal matches your hardware revision.
 - **SYM only works in WiFi password screen** — extending it to other text input screens is straightforward (check `symNext` and look up `symMap[]`), but it's not wired up globally yet.
 

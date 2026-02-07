@@ -66,8 +66,8 @@ bool touchReady = false;
 const char keymap[KB_ROWS][KB_COLS] = {
     {'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'},
     {'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '\b'},
-    {KEY_ALT, 'z', 'x', 'c', 'v', 'b', 'n', 'm', KEY_SYM, '\n'},
-    {' ', ' ', ' ', ' ', ' ', '-', '*', KEY_SHIFT, '0', 0},
+    {KEY_ALT, 'z', 'x', 'c', 'v', 'b', 'n', 'm', '$', '\n'},
+    {' ', ' ', ' ', ' ', ' ', KEY_SYM, ' ', KEY_SHIFT, '0', KEY_SHIFT},
 };
 
 // --- Layout ---
