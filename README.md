@@ -204,6 +204,14 @@ Row 2:  [ALT]  Z  X  C  V  B  N  M  $  [ENTER]
 Row 3:  [LSHIFT]  [MIC/0]  [---SPACE---]  [SYM]  [RSHIFT]
 ```
 
+**SYM (held):**
+```
+Row 0:  #  1  2  3  (  )  _  -  +  @
+Row 1:  *  4  5  6  /  :  ;  '  "  [BKSP]
+Row 2:  [ALT]  7  8  9  ?  |  ,  .  $  [ENTER]
+Row 3:  [LSHIFT]  [MIC/0]  [---SPACE---]  [SYM]  [RSHIFT]
+```
+
 **Reading keys:**
 ```cpp
 if (keypad.available() > 0) {
@@ -219,11 +227,19 @@ if (keypad.available() > 0) {
 
 **SYM key** (number input): press SYM then a letter to get its number.
 
-| Key | w | e | r | s | d | f | x | c | v |
-|-----|---|---|---|---|---|---|---|---|---|
-| SYM | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
+| Key | q | w | e | r | t | y | u | i | o | p |
+|-----|---|---|---|---|---|---|---|---|---|---|
+| SYM | # | 1 | 2 | 3 | ( | ) | _ | - | + | @ |
 
-The `0` key is a dedicated physical key (left of spacebar).
+| Key | a | s | d | f | g | h | j | k | l |
+|-----|---|---|---|---|---|---|---|---|---|
+| SYM | * | 4 | 5 | 6 | / | : | ; | ' | " |
+
+| Key | z | x | c | v | b | n | m |
+|-----|---|---|---|---|---|---|---|
+| SYM | 7 | 8 | 9 | ? | \| | , | . |
+
+The `0` key is a dedicated physical key (left of spacebar). `$` is a dedicated key on row 2.
 
 **SHIFT key:** toggles next letter to uppercase. Used in text input screens.
 
@@ -376,9 +392,9 @@ The touch toggle exists in settings but currently has no effect since touch neve
 
 The letter layout (rows 0-1) and basic navigation work. Row 2 and 3 physical layout has been identified but matrix-to-physical mapping is best-effort and may be wrong. Known issues:
 
-- **SYM key** — only number input is mapped (SYM + letter = 1-9). The physical keycaps likely have additional symbol labels (`@`, `#`, `!`, `?`, etc.) that are **not yet mapped**. The full SYM layout still needs to be documented.
+- **SYM key** — full layout now mapped (numbers, symbols, punctuation). See keyboard reference above for the complete table.
 - **Row 3 matrix positions** — the 5 physical keys (LShift, Mic/0, Space, Sym, RShift) map to 10 matrix columns. Space spans multiple columns. The exact column assignments for SYM and the two shift keys are best guesses based on the factory firmware — if a key produces the wrong character, the matrix column mapping needs adjusting.
-- **`-` and `*` not directly typeable** — these were previously mapped as standalone keys on row 3 but that was incorrect. They need to be added as SYM combinations once the full SYM layout is known.
+- **`-` and `*`** — accessible via SYM+I and SYM+R row 3 standalone mapping was incorrect.
 - **`$` is a standalone key** — row 2 position 8 produces a literal `$` character (not a modifier).
 - **Mic/Mute button** — currently mapped as `'0'` for text input. Could be repurposed as a function key (mute toggle, etc.).
 - **Column reversal** — the TCA8418 column order is electrically reversed from physical layout. The firmware corrects with `col = (KB_COLS - 1) - k % KB_COLS`. If you're getting wrong characters, check that this reversal matches your hardware revision.

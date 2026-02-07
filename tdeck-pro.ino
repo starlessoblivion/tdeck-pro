@@ -48,9 +48,17 @@ char symMap[128];
 
 void initSymMap() {
     memset(symMap, 0, sizeof(symMap));
-    symMap['w'] = '1'; symMap['e'] = '2'; symMap['r'] = '3';
-    symMap['s'] = '4'; symMap['d'] = '5'; symMap['f'] = '6';
-    symMap['x'] = '7'; symMap['c'] = '8'; symMap['v'] = '9';
+    // Row 0: # 1 2 3 ( ) _ - + @
+    symMap['q'] = '#'; symMap['w'] = '1'; symMap['e'] = '2'; symMap['r'] = '3';
+    symMap['t'] = '('; symMap['y'] = ')'; symMap['u'] = '_'; symMap['i'] = '-';
+    symMap['o'] = '+'; symMap['p'] = '@';
+    // Row 1: * 4 5 6 / : ; ' "
+    symMap['a'] = '*'; symMap['s'] = '4'; symMap['d'] = '5'; symMap['f'] = '6';
+    symMap['g'] = '/'; symMap['h'] = ':'; symMap['j'] = ';'; symMap['k'] = '\'';
+    symMap['l'] = '"';
+    // Row 2: 7 8 9 ? | , .
+    symMap['z'] = '7'; symMap['x'] = '8'; symMap['c'] = '9'; symMap['v'] = '?';
+    symMap['b'] = '|'; symMap['n'] = ','; symMap['m'] = '.';
 }
 
 // --- Objects ---
