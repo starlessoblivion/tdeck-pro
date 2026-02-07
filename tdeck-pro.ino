@@ -93,17 +93,17 @@ const char keymap[KB_ROWS][KB_COLS] = {
 #define LABEL_H    16
 
 const char* appNames[ICON_COUNT] = {
-    "Settings", "", "", "", "", "", "", "", ""
+    "Settings", "Text", "", "", "", "", "", "", ""
 };
 
 const char appShortcuts[ICON_COUNT] = {
-    's', 0, 0, 0, 0, 0, 0, 0, 0
+    's', 't', 0, 0, 0, 0, 0, 0, 0
 };
 
 int selectedApp = 0;
 
 // Screens
-enum Screen { SCREEN_HOME, SCREEN_SETTINGS, SCREEN_WIFI_POPUP, SCREEN_WIFI_PASSWORD };
+enum Screen { SCREEN_HOME, SCREEN_SETTINGS, SCREEN_WIFI_POPUP, SCREEN_WIFI_PASSWORD, SCREEN_TEXT };
 Screen currentScreen = SCREEN_HOME;
 
 bool altMode = false;
@@ -170,6 +170,11 @@ char wifiConnSSID[33];
 bool shiftNext = false;
 bool symNext = false;
 bool micMuted = false;
+
+// --- Text app state ---
+#define TEXT_BUF_SIZE 512
+char textBuf[TEXT_BUF_SIZE + 1];
+int textLen = 0;
 
 // --- WiFi credential helpers ---
 
@@ -288,6 +293,15 @@ void drawAppIcon(int idx, int x, int y, bool selected) {
             display.fillCircle(cx, cy, 10, bg);
             display.fillCircle(cx, cy, 4, fg);
         }
+    } else if (idx == 1) {
+        // Text cursor icon
+        display.setFont(&FreeSansBold9pt7b);
+        display.setTextColor(fg);
+        int16_t tbx, tby; uint16_t tbw, tbh;
+        display.getTextBounds("T", 0, 0, &tbx, &tby, &tbw, &tbh);
+        display.setCursor(cx - tbw / 2 - tbx, cy + tbh / 2);
+        display.print("T");
+        display.fillRect(cx + tbw / 2 + 3, cy - 8, 2, 18, fg);
     }
     const char* name = appNames[idx];
     if (name[0] != '\0') {
@@ -732,6 +746,61 @@ void attemptWifiConnect(const char* ssid, const char* pass) {
     drawSettingsScreen();
 }
 
+void drawTextScreen() {
+    display.setRotation(DISPLAY_ROTATION);
+    display.setFullWindow();
+    display.firstPage();
+    do {
+        display.fillScreen(GxEPD_WHITE);
+        display.drawLine(0, TOP_BAR_H - 1, display.width() - 1, TOP_BAR_H - 1, GxEPD_BLACK);
+        display.setFont(&Picopixel);
+        display.setTextColor(GxEPD_BLACK);
+        display.setCursor(4, 12);
+        display.print("< BACK");
+
+        // Show SYM/SHIFT indicator
+        if (symNext) {
+            display.setCursor(display.width() - 30, 12);
+            display.print("SYM");
+        } else if (shiftNext) {
+            display.setCursor(display.width() - 30, 12);
+            display.print("SHIFT");
+        }
+
+        // Text content
+        display.setFont(&FreeSans9pt7b);
+        display.setTextColor(GxEPD_BLACK);
+
+        // Word-wrap text into the content area
+        int lineH = 18;
+        int maxY = display.height() - 4;
+        int x = 4, y = TOP_BAR_H + 16;
+        int maxW = display.width() - 8;
+
+        for (int i = 0; i < textLen && y <= maxY; i++) {
+            char ch = textBuf[i];
+            if (ch == '\n') {
+                x = 4; y += lineH;
+                continue;
+            }
+            char tmp[2] = { ch, 0 };
+            int16_t tbx, tby; uint16_t tbw, tbh;
+            display.getTextBounds(tmp, 0, 0, &tbx, &tby, &tbw, &tbh);
+            if (x + tbw > maxW) {
+                x = 4; y += lineH;
+                if (y > maxY) break;
+            }
+            display.setCursor(x, y);
+            display.print(tmp);
+            x += tbw + 1;
+        }
+
+        // Cursor blink
+        display.fillRect(x, y - 12, 2, 14, GxEPD_BLACK);
+
+    } while (display.nextPage());
+}
+
 void openApp(int index) {
     if (index == 0) {
         currentScreen = SCREEN_SETTINGS;
@@ -739,6 +808,12 @@ void openApp(int index) {
         settingsScrollOffset = 0;
         delay(150);
         drawSettingsScreen();
+    } else if (index == 1) {
+        currentScreen = SCREEN_TEXT;
+        textLen = 0; textBuf[0] = 0;
+        shiftNext = false; symNext = false;
+        delay(150);
+        drawTextScreen();
     }
 }
 
@@ -965,6 +1040,32 @@ void handleKeyboard() {
             wifiPassBuf[wifiPassLen++] = c;
             wifiPassBuf[wifiPassLen] = 0;
             delay(100); drawWifiPassword();
+        }
+
+    // --- TEXT APP ---
+    } else if (currentScreen == SCREEN_TEXT) {
+        if (c == '\b') {
+            if (altMode) {
+                altMode = false;
+                currentScreen = SCREEN_HOME;
+                delay(150); drawHomeScreen();
+            } else if (textLen > 0) {
+                textLen--; textBuf[textLen] = 0;
+                delay(100); drawTextScreen();
+            }
+        } else if (c == KEY_ALT) {
+            altMode = true;
+        } else if (c == '\n') {
+            if (textLen < TEXT_BUF_SIZE) {
+                textBuf[textLen++] = '\n';
+                textBuf[textLen] = 0;
+                delay(100); drawTextScreen();
+            }
+        } else if (c >= ' ' && textLen < TEXT_BUF_SIZE) {
+            altMode = false;
+            textBuf[textLen++] = c;
+            textBuf[textLen] = 0;
+            delay(100); drawTextScreen();
         }
     }
 }
