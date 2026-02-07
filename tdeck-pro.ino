@@ -900,17 +900,12 @@ void handleKeyboard() {
             if (changed) { delay(150); drawSettingsScreen(); }
         } else if (c == '\n') {
             switch (settingsSelected) {
-                case 0: touchEnabled = !touchEnabled; delay(150); drawSettingsScreen(); break;
                 case 3:
                     // WiFi: Enter opens popup
                     currentScreen = SCREEN_WIFI_POPUP;
                     scanAndShowWifi();
                     drawWifiPopup();
                     break;
-                case 4: btEnabled ? btStop() : btStart(); btEnabled = !btEnabled; delay(150); drawSettingsScreen(); break;
-                case 5: loraEnabled = !loraEnabled; digitalWrite(BOARD_LORA_EN, loraEnabled); delay(150); drawSettingsScreen(); break;
-                case 6: gpsEnabled = !gpsEnabled; digitalWrite(BOARD_GPS_EN, gpsEnabled); delay(150); drawSettingsScreen(); break;
-                case 7: gyroEnabled = !gyroEnabled; digitalWrite(BOARD_1V8_EN, gyroEnabled); delay(150); drawSettingsScreen(); break;
             }
         } else if (c == '\b') {
             currentScreen = SCREEN_HOME;
