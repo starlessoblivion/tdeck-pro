@@ -193,7 +193,7 @@ The TCA8418 is a 4x10 matrix scanner. Key events come in as press/release with m
 Row 0:  q  w  e  r  t  y  u  i  o  p
 Row 1:  a  s  d  f  g  h  j  k  l  [BKSP]
 Row 2:  [ALT]  z  x  c  v  b  n  m  $  [ENTER]
-Row 3:  [LSHIFT]  [MIC/0]  [---SPACE---]  [SYM]  [RSHIFT]
+Row 3:  [LSHIFT]  [MIC]  [---SPACE---]  [SYM]  [RSHIFT]
 ```
 
 **Shift (held):**
@@ -201,7 +201,7 @@ Row 3:  [LSHIFT]  [MIC/0]  [---SPACE---]  [SYM]  [RSHIFT]
 Row 0:  Q  W  E  R  T  Y  U  I  O  P
 Row 1:  A  S  D  F  G  H  J  K  L  [BKSP]
 Row 2:  [ALT]  Z  X  C  V  B  N  M  $  [ENTER]
-Row 3:  [LSHIFT]  [MIC/0]  [---SPACE---]  [SYM]  [RSHIFT]
+Row 3:  [LSHIFT]  --  [---SPACE---]  [SYM]  [RSHIFT]
 ```
 
 **SYM (held):**
@@ -209,7 +209,7 @@ Row 3:  [LSHIFT]  [MIC/0]  [---SPACE---]  [SYM]  [RSHIFT]
 Row 0:  #  1  2  3  (  )  _  -  +  @
 Row 1:  *  4  5  6  /  :  ;  '  "  [BKSP]
 Row 2:  [ALT]  7  8  9  ?  |  ,  .  $  [ENTER]
-Row 3:  [LSHIFT]  [MIC/0]  [---SPACE---]  [SYM]  [RSHIFT]
+Row 3:  [LSHIFT]  0  [---SPACE---]  [SYM]  [RSHIFT]
 ```
 
 **Reading keys:**
@@ -239,7 +239,7 @@ if (keypad.available() > 0) {
 |-----|---|---|---|---|---|---|---|
 | SYM | 7 | 8 | 9 | ? | \| | , | . |
 
-The `0` key is a dedicated physical key (left of spacebar). `$` is a dedicated key on row 2.
+The `0` is accessed via SYM + MIC (the key left of spacebar). `$` is a dedicated key on row 2.
 
 **SHIFT key:** toggles next letter to uppercase. Used in text input screens.
 
@@ -396,7 +396,7 @@ The letter layout (rows 0-1) and basic navigation work. Row 2 and 3 physical lay
 - **Row 3 matrix positions** — the 5 physical keys (LShift, Mic/0, Space, Sym, RShift) map to 10 matrix columns. Space spans multiple columns. The exact column assignments for SYM and the two shift keys are best guesses based on the factory firmware — if a key produces the wrong character, the matrix column mapping needs adjusting.
 - **`-` and `*`** — accessible via SYM+I and SYM+R row 3 standalone mapping was incorrect.
 - **`$` is a standalone key** — row 2 position 8 produces a literal `$` character (not a modifier).
-- **Mic/Mute button** — currently mapped as `'0'` for text input. Could be repurposed as a function key (mute toggle, etc.).
+- **Mic/Mute button** — produces `'0'` only when SYM is active. Without SYM it does nothing yet — could be repurposed as a function key (mute toggle, etc.).
 - **Column reversal** — the TCA8418 column order is electrically reversed from physical layout. The firmware corrects with `col = (KB_COLS - 1) - k % KB_COLS`. If you're getting wrong characters, check that this reversal matches your hardware revision.
 - **SYM only works in WiFi password screen** — extending it to other text input screens is straightforward (check `symNext` and look up `symMap[]`), but it's not wired up globally yet.
 

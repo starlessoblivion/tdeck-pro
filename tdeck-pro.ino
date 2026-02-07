@@ -42,6 +42,7 @@ extern "C" {
 #define KEY_ALT   '\1'
 #define KEY_SHIFT '\2'
 #define KEY_SYM   '\3'
+#define KEY_MIC   '\4'
 
 // Sym key mapping (BB Q10 layout): letter -> number/symbol
 char symMap[128];
@@ -59,6 +60,8 @@ void initSymMap() {
     // Row 2: 7 8 9 ? | , .
     symMap['z'] = '7'; symMap['x'] = '8'; symMap['c'] = '9'; symMap['v'] = '?';
     symMap['b'] = '|'; symMap['n'] = ','; symMap['m'] = '.';
+    // Mic key: SYM+MIC = 0
+    symMap[KEY_MIC] = '0';
 }
 
 // --- Objects ---
@@ -75,7 +78,7 @@ const char keymap[KB_ROWS][KB_COLS] = {
     {'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'},
     {'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '\b'},
     {KEY_ALT, 'z', 'x', 'c', 'v', 'b', 'n', 'm', '$', '\n'},
-    {' ', ' ', ' ', ' ', ' ', KEY_SYM, ' ', KEY_SHIFT, '0', KEY_SHIFT},
+    {' ', ' ', ' ', ' ', ' ', KEY_SYM, ' ', KEY_SHIFT, KEY_MIC, KEY_SHIFT},
 };
 
 // --- Layout ---
@@ -940,6 +943,9 @@ void handleKeyboard() {
             } else if (shiftNext && ch >= 'a' && ch <= 'z') {
                 ch = ch - 'a' + 'A';
                 shiftNext = false;
+            } else if (ch < ' ') {
+                // Ignore non-printable characters (KEY_MIC etc. without SYM)
+                return;
             }
             altMode = false;
             wifiPassBuf[wifiPassLen++] = ch;
