@@ -169,6 +169,7 @@ int wifiPassLen = 0;
 char wifiConnSSID[33];
 bool shiftNext = false;
 bool symNext = false;
+bool micMuted = false;
 
 // --- WiFi credential helpers ---
 
@@ -341,11 +342,15 @@ void drawHomeScreen() {
     do {
         display.fillScreen(GxEPD_WHITE);
         display.drawLine(0, TOP_BAR_H - 1, display.width() - 1, TOP_BAR_H - 1, GxEPD_BLACK);
+        display.setFont(&Picopixel);
+        display.setTextColor(GxEPD_BLACK);
         if (altMode) {
-            display.setFont(&Picopixel);
-            display.setTextColor(GxEPD_BLACK);
             display.setCursor(4, 12);
             display.print("ALT");
+        }
+        if (micMuted) {
+            display.setCursor(altMode ? 24 : 4, 12);
+            display.print("MUTE");
         }
         for (int i = 0; i < ICON_COUNT; i++) {
             int x, y;
@@ -818,6 +823,14 @@ void handleKeyboard() {
     } else if (shiftNext && c >= 'a' && c <= 'z') {
         c = c - 'a' + 'A';
         shiftNext = false;
+    }
+
+    // --- Global MIC key (mute toggle) ---
+    if (c == KEY_MIC) {
+        micMuted = !micMuted;
+        shiftNext = false;
+        if (currentScreen == SCREEN_HOME) { delay(100); drawHomeScreen(); }
+        return;
     }
 
     // --- HOME ---
