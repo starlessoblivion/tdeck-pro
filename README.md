@@ -190,26 +190,26 @@ drawSelector("75%", textY, hasLeft, hasRight, foregroundColor);
 The TCA8418 is a 4x10 matrix scanner. Key events come in as press/release with matrix position encoded. The firmware maps positions to characters:
 
 ```
-         q  w  e  r  t  y  u  i  o  p
-         a  s  d  f  g  h  j  k  l  [BKSP]
-    [ALT]  z  x  c  v  b  n  m  $  [ENTER]
-    [LSHIFT] [MIC] [---SPACE---] [SYM] [RSHIFT]
+     q  w  e  r  t  y  u  i  o  p
+     a  s  d  f  g  h  j  k  l  [BKSP]
+ [ALT]  z  x  c  v  b  n  m  $  [ENTER]
+ [LSHIFT] [MIC] [---SPACE---] [SYM] [RSHIFT]
 ```
 
 **Shift (held):**
 ```
-         Q  W  E  R  T  Y  U  I  O  P
-         A  S  D  F  G  H  J  K  L  [BKSP]
-    [ALT]  Z  X  C  V  B  N  M  $  [ENTER]
-    [LSHIFT] -- [---SPACE---] [SYM] [RSHIFT]
+     Q  W  E  R  T  Y  U  I  O  P
+     A  S  D  F  G  H  J  K  L  [BKSP]
+ [ALT]  Z  X  C  V  B  N  M  $  [ENTER]
+ [LSHIFT] -- [---SPACE---] [SYM] [RSHIFT]
 ```
 
 **SYM (held):**
 ```
-         #  1  2  3  (  )  _  -  +  @
-         *  4  5  6  /  :  ;  '  "  [BKSP]
-    [ALT]  7  8  9  ?  |  ,  .  $  [ENTER]
-    [LSHIFT] 0  [---SPACE---] [SYM] [RSHIFT]
+     #  1  2  3  (  )  _  -  +  @
+     *  4  5  6  /  :  ;  '  "  [BKSP]
+ [ALT]  7  8  9  ?  |  ,  .  $  [ENTER]
+ [LSHIFT] 0  [---SPACE---] [SYM] [RSHIFT]
 ```
 
 **Reading keys:**
