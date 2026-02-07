@@ -359,7 +359,7 @@ Communicates over I2C (shared bus). No driver initialized — you'd add the QMI8
 | | Alt + letter | Jump to app by first letter |
 | **Settings** | W/S | Navigate items |
 | | A/D | Adjust value / toggle off-on |
-| | Enter | Toggle or open sub-screen |
+| | Enter | Open sub-menu (WiFi) |
 | | Backspace | Back to home |
 | **WiFi Popup** | W/S | Navigate network list |
 | | Enter | Connect (saved/open) or enter password |
