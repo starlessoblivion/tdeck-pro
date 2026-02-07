@@ -123,7 +123,7 @@ enum Screen { SCREEN_HOME, SCREEN_SETTINGS, ..., SCREEN_MYAPP };
 2. **Register on the home grid** (slots 1-7 are empty):
 ```cpp
 const char* appNames[ICON_COUNT] = {
-    "Settings", "", "MyApp", "", "", "", "", "", "Mesh"
+    "Settings", "", "MyApp", "", "", "", "", "", ""
 };
 const char appShortcuts[ICON_COUNT] = {
     's', 0, 'y', 0, 0, 0, 0, 0, 'm'   // Alt+Y opens MyApp
@@ -325,7 +325,7 @@ digitalWrite(BOARD_LORA_EN, HIGH);  // power on
 digitalWrite(BOARD_LORA_EN, LOW);   // power off
 ```
 
-No LoRa stack is implemented — just power management. For Meshtastic or custom LoRa, you'd init the SX1262 on the shared SPI bus (CS = pin 3, RST = pin 4) after pulling the enable pin HIGH.
+No LoRa stack is implemented — just power management. For custom LoRa, you'd init the SX1262 on the shared SPI bus (CS = pin 3, RST = pin 4) after pulling the enable pin HIGH.
 
 ### GPS (L76K)
 
