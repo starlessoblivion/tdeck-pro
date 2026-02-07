@@ -797,6 +797,29 @@ void handleKeyboard() {
         kbLightIsOff = false;
     }
 
+    // --- Global modifier keys ---
+    if (c == KEY_SHIFT) {
+        shiftNext = !shiftNext;
+        symNext = false;
+        if (currentScreen == SCREEN_WIFI_PASSWORD) { delay(100); drawWifiPassword(); }
+        return;
+    }
+    if (c == KEY_SYM) {
+        symNext = !symNext;
+        shiftNext = false;
+        if (currentScreen == SCREEN_WIFI_PASSWORD) { delay(100); drawWifiPassword(); }
+        return;
+    }
+
+    // Apply SYM/SHIFT to get final character
+    if (symNext && c >= 0 && c < 128 && symMap[(int)c]) {
+        c = symMap[(int)c];
+        symNext = false;
+    } else if (shiftNext && c >= 'a' && c <= 'z') {
+        c = c - 'a' + 'A';
+        shiftNext = false;
+    }
+
     // --- HOME ---
     if (currentScreen == SCREEN_HOME) {
         if (c == KEY_ALT) {
@@ -910,19 +933,10 @@ void handleKeyboard() {
 
     // --- WIFI PASSWORD ---
     } else if (currentScreen == SCREEN_WIFI_PASSWORD) {
-        if (c == KEY_SHIFT) {
-            shiftNext = !shiftNext;
-            symNext = false;
-            delay(100); drawWifiPassword();
-        } else if (c == KEY_SYM) {
-            symNext = !symNext;
-            shiftNext = false;
-            delay(100); drawWifiPassword();
-        } else if (c == KEY_ALT) {
+        if (c == KEY_ALT) {
             altMode = true;
         } else if (c == '\b') {
             if (altMode) {
-                // Alt+Backspace = go back
                 altMode = false;
                 currentScreen = SCREEN_WIFI_POPUP;
                 delay(150); drawWifiPopup();
@@ -935,20 +949,9 @@ void handleKeyboard() {
             if (wifiPassLen > 0) {
                 attemptWifiConnect(wifiConnSSID, wifiPassBuf);
             }
-        } else if (wifiPassLen < MAX_PASS_LEN) {
-            char ch = c;
-            if (symNext && ch >= 0 && ch < 128 && symMap[(int)ch]) {
-                ch = symMap[(int)ch];
-                symNext = false;
-            } else if (shiftNext && ch >= 'a' && ch <= 'z') {
-                ch = ch - 'a' + 'A';
-                shiftNext = false;
-            } else if (ch < ' ') {
-                // Ignore non-printable characters (KEY_MIC etc. without SYM)
-                return;
-            }
+        } else if (c >= ' ' && wifiPassLen < MAX_PASS_LEN) {
             altMode = false;
-            wifiPassBuf[wifiPassLen++] = ch;
+            wifiPassBuf[wifiPassLen++] = c;
             wifiPassBuf[wifiPassLen] = 0;
             delay(100); drawWifiPassword();
         }
