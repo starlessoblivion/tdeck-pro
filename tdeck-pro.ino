@@ -438,6 +438,11 @@ void drawSettingsScreen() {
                 case 3: // WiFi
                     display.print("WiFi");
                     drawToggle(toggleX, toggleY, wifiEnabled, fg);
+                    { // Enter arrow
+                        int ax = display.width() - 14;
+                        int ay = itemY + SETTINGS_ITEM_H / 2;
+                        display.fillTriangle(ax, ay - 5, ax, ay + 5, ax + 7, ay, fg);
+                    }
                     break;
                 case 4: // Bluetooth
                     display.print("Bluetooth");
