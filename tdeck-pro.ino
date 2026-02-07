@@ -821,13 +821,11 @@ void handleKeyboard() {
         return;
     }
 
-    // Apply SYM/SHIFT to get final character
+    // Apply SYM/SHIFT to get final character (sticky — stays on until toggled off)
     if (symNext && c >= 0 && c < 128 && symMap[(int)c]) {
         c = symMap[(int)c];
-        symNext = false;
     } else if (shiftNext && c >= 'a' && c <= 'z') {
         c = c - 'a' + 'A';
-        shiftNext = false;
     }
 
     // --- Global MIC key (mute toggle) ---
