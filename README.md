@@ -364,15 +364,16 @@ The touch toggle exists in settings but currently has no effect since touch neve
 
 **If you're investigating:** the interrupt pin is GPIO 12, configured for falling edge. The ISR sets a flag and queues to a FreeRTOS queue. The issue might be I2C bus contention between Wire (keyboard) and the ESP-IDF I2C driver (touch), or the interrupt never firing. Serial debug output has been unreliable (often nothing appears on the USB CDC serial).
 
-### Keyboard Matrix Mapping
+### Keyboard Mapping — MOSTLY BROKEN
 
-The TCA8418 column order is electrically reversed from physical layout — the firmware corrects this with `col = (KB_COLS - 1) - k % KB_COLS`. If you're getting wrong characters, check that this reversal matches your hardware revision.
+The basic letter layout works, but the full keyboard mapping is incomplete and likely wrong in places. Known issues:
 
-The bottom row has two positions (`[3][8]` = `'0'`, `[3][9]` = unmapped) that correspond to physical keys whose exact position may vary. The factory firmware maps `[3][9]` as `'U'` (possibly an up-arrow or microphone key) — currently unmapped here.
+- **SYM key** — only number input is mapped (SYM + letter = 1-9). The physical keycaps have additional symbol labels (`@`, `#`, `!`, `?`, etc.) that are **not yet mapped**. The full SYM layout still needs to be figured out and added.
+- **Bottom row** — `[3][8]` = `'0'`, `[3][9]` = unmapped. The factory firmware maps `[3][9]` as `'U'` (possibly up-arrow or microphone key). Physical positions may not match what's expected.
+- **Column reversal** — the TCA8418 column order is electrically reversed from physical layout. The firmware corrects with `col = (KB_COLS - 1) - k % KB_COLS`. If you're getting wrong characters, check that this reversal matches your hardware revision.
+- **SYM only works in WiFi password screen** — extending it to other text input screens is straightforward (check `symNext` and look up `symMap[]`), but it's not wired up globally yet.
 
-### SYM Key — Partial Mapping
-
-Only number input is mapped (SYM + letter = digit). The physical keycaps may have additional symbol labels (e.g., `@`, `#`, `!`) that are not yet mapped. Currently only functional in the WiFi password entry screen. Extending SYM to other text input screens is straightforward — check `symNext` and look up `symMap[]`.
+If you have the device in hand and can map out the full SYM layout from the keycap labels, PRs welcome.
 
 ### E-Ink Refresh Speed
 
