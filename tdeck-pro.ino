@@ -82,11 +82,11 @@ const char keymap[KB_ROWS][KB_COLS] = {
 #define LABEL_H    16
 
 const char* appNames[ICON_COUNT] = {
-    "Settings", "", "", "", "", "", "", "", "Mesh"
+    "Settings", "", "", "", "", "", "", "", ""
 };
 
 const char appShortcuts[ICON_COUNT] = {
-    's', 0, 0, 0, 0, 0, 0, 0, 'm'
+    's', 0, 0, 0, 0, 0, 0, 0, 0
 };
 
 int selectedApp = 0;
@@ -260,30 +260,6 @@ void drawGear(int cx, int cy, int outerR, int innerR, int holeR, int teeth, uint
     display.fillCircle(cx, cy, holeR, color);
 }
 
-void drawMeshtastic(int cx, int cy, int size, uint16_t color) {
-    int w = size;
-    int h = size * 2 / 3;
-    int baseY = cy + h / 2;
-    int topY = cy - h / 2;
-    int midY = cy + h / 6;
-    display.drawLine(cx - w, baseY, cx - w / 3, topY, color);
-    display.drawLine(cx - w + 1, baseY, cx - w / 3 + 1, topY, color);
-    display.drawLine(cx - w / 3, topY, cx, midY, color);
-    display.drawLine(cx - w / 3 + 1, topY, cx + 1, midY, color);
-    display.drawLine(cx, midY, cx + w / 3, topY, color);
-    display.drawLine(cx + 1, midY, cx + w / 3 + 1, topY, color);
-    display.drawLine(cx + w / 3, topY, cx + w, baseY, color);
-    display.drawLine(cx + w / 3 + 1, topY, cx + w + 1, baseY, color);
-    int arcCy = topY - 4;
-    for (int r = 5; r <= 13; r += 4) {
-        for (float a = -0.9; a <= 0.9; a += 0.05) {
-            int px = cx + cos(a - PI / 2) * r;
-            int py = arcCy + sin(a - PI / 2) * r;
-            display.drawPixel(px, py, color);
-        }
-    }
-}
-
 void drawAppIcon(int idx, int x, int y, bool selected) {
     uint16_t bg = selected ? GxEPD_BLACK : GxEPD_WHITE;
     uint16_t fg = selected ? GxEPD_WHITE : GxEPD_BLACK;
@@ -300,8 +276,6 @@ void drawAppIcon(int idx, int x, int y, bool selected) {
             display.fillCircle(cx, cy, 10, bg);
             display.fillCircle(cx, cy, 4, fg);
         }
-    } else if (idx == 8) {
-        drawMeshtastic(cx, cy + 4, 18, fg);
     }
     const char* name = appNames[idx];
     if (name[0] != '\0') {

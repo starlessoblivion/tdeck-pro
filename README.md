@@ -384,7 +384,7 @@ USB CDC serial (`Serial.begin(115200)`) is initialized but output is unreliable.
 
 ### Not Yet Implemented
 
-- **LoRa** — enable pin works, no radio stack. Placeholder Meshtastic icon on home screen.
+- **LoRa** — enable pin works, no radio stack.
 - **GPS** — enable pin works, UART not initialized, no NMEA parsing.
 - **Gyroscope** — 1.8V rail toggle works, no QMI8658 driver.
 - **Bluetooth** — `btStart()`/`btStop()` works, no BLE/Classic services.
